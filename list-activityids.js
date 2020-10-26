@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         List activityids
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.7
 // @description  List activityids in a VLE page
 // @author       You
 // @match        *.open.ac.uk/*
@@ -46,6 +46,7 @@
   // Look for the 'activityid' string in the HTML.
   var startFrom = 0;
   var commaPos = 0;
+  var regex = /'/gi;
   for (var i = 0; i < 50; i++) {
     pos = html.indexOf('activityid', startFrom);
     if (pos === -1) {
@@ -53,9 +54,11 @@
     }
 
     commaPos = html.indexOf(',', pos);
+    var desc = html.substring(pos, commaPos);
+    desc = desc.replace(regex, '');
     results.push({
       pos: pos,
-      desc: html.substring(pos, commaPos)
+      desc: desc
     });
     startFrom = pos + 1;
   }
@@ -64,7 +67,7 @@
   startFrom = 0;
   commaPos = 0;
   for (i = 0; i < 50; i++) {
-    pos = html.indexOf('View interactive version', startFrom);
+    pos = html.indexOf('View interactive version</a>', startFrom);
     if (pos === -1) {
       break;
     }
