@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         List activityids
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  List activityids in a VLE page
 // @author       You
 // @match        *.open.ac.uk/*
@@ -13,11 +13,6 @@
 
 (function () {
   'use strict';
-
-  var body = window.top.document.getElementsByTagName('body')[0];
-  var html = body.innerHTML;
-  var results = [];
-  var pos;
 
   GM_addStyle('#bw-list-activityids-results {' +
     'width: 280px;' +
@@ -36,6 +31,11 @@
 
     'ol { padding-left: 20px; margin-bottom: 0; }'
   );
+
+  var body = window.top.document.getElementsByTagName('body')[0];
+  var html = body.innerHTML;
+  var results = [];
+  var pos;
 
   // Create the results div.
   var resultsDiv = document.createElement('div');
@@ -84,17 +84,23 @@
     return a.pos - b.pos;
   });
 
-  // Print out to the console.
-  var orderedList = document.createElement('ol');
-  var listItem;
-  results.forEach(function (value, i) {
-    console.log(i + 1 + ') ', value.desc);
-    listItem = document.createElement('li');
-    listItem.innerText = value.desc
-    orderedList.appendChild(listItem);
-  });
-
-  resultsDiv.appendChild(orderedList);
+  // Print out to the console and screen.
+  if (!results.length) {
+    console.log('No activities found');
+    var noneFound = document.createElement('span');
+    noneFound.innerText = 'Nothing here';
+    resultsDiv.appendChild(noneFound);
+  } else {
+    var orderedList = document.createElement('ol');
+    var listItem;
+    results.forEach(function (value, i) {
+      console.log(i + 1 + ') ', value.desc);
+      listItem = document.createElement('li');
+      listItem.innerText = value.desc
+      orderedList.appendChild(listItem);
+    });
+    resultsDiv.appendChild(orderedList);
+  }
 
   setInterval(function () {
     var topPos = Number(window.top.document.documentElement.scrollTop) + 10
