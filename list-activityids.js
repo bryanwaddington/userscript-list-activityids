@@ -1,12 +1,11 @@
 // ==UserScript==
 // @name         List activityids
 // @namespace    http://tampermonkey.net/
-// @version      0.8
+// @version      0.9
 // @description  List activityids in a VLE page
 // @author       You
-// @match        *.open.ac.uk/*
+// @match        https://*.open.ac.uk/*
 // @grant        GM_addStyle
-// @updateURL    https://openuserjs.org/meta/bryanwaddington/My_Script.meta.js
 // @license      MIT
 // @copyright    2020, bryanwaddington (https://openuserjs.org/users/bryanwaddington)
 // ==/UserScript==
